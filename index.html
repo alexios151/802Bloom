@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Bloom Where You Live | Native Planting Design in the 802</title>
+  <meta name="description" content="Native and pollinator-friendly planting design for Vermont yards. Beautiful, low-maintenance landscapes buzzing with life. Serving Burlington and Chittenden County." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&family=Montserrat:wght@300;400;600&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --green: #3a5a40;
+      --green-dark: #2d4531;
+      --sage: #a3b18a;
+      --cream: #f7f4ec;
+      --charcoal: #33352f;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'Montserrat', sans-serif;
+      color: var(--charcoal);
+      background: var(--cream);
+      line-height: 1.6;
+      font-weight: 300;
+    }
+    h1, h2, h3 { font-family: 'Playfair Display', serif; font-weight: 700; color: var(--green-dark); }
+
+    /* HERO */
+    .hero {
+      background: linear-gradient(rgba(45,69,49,0.55), rgba(45,69,49,0.55)),
+                  url('https://images.unsplash.com/photo-1490750967868-88aa4486c946?auto=format&fit=crop&w=1600&q=80') center/cover;
+      color: #fff;
+      text-align: center;
+      padding: 7rem 1.5rem 6rem;
+    }
+    .hero h1 { color: #fff; font-size: clamp(2.4rem, 6vw, 4rem); line-height: 1.1; margin-bottom: 1rem; }
+    .hero p { font-size: clamp(1.05rem, 2.5vw, 1.35rem); font-weight: 300; max-width: 640px; margin: 0 auto 2rem; }
+    .btn {
+      display: inline-block;
+      background: var(--sage);
+      color: var(--green-dark);
+      padding: 0.85rem 2rem;
+      border-radius: 40px;
+      text-decoration: none;
+      font-weight: 600;
+      letter-spacing: 0.02em;
+      transition: transform 0.15s ease, background 0.15s ease;
+    }
+    .btn:hover { transform: translateY(-2px); background: #b7c79b; }
+
+    /* SECTIONS */
+    section { max-width: 900px; margin: 0 auto; padding: 4.5rem 1.5rem; }
+    .section-tag { text-transform: uppercase; letter-spacing: 0.15em; font-size: 0.8rem; color: var(--sage); font-weight: 600; margin-bottom: 0.6rem; }
+    h2 { font-size: clamp(1.8rem, 4vw, 2.6rem); margin-bottom: 1.2rem; }
+    .lead { font-size: 1.1rem; margin-bottom: 1rem; }
+
+    /* SERVICES */
+    .services { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 1.5rem; margin-top: 2rem; }
+    .card {
+      background: #fff;
+      border: 1px solid #e6e1d5;
+      border-radius: 14px;
+      padding: 2rem 1.5rem;
+      text-align: center;
+    }
+    .card h3 { font-size: 1.3rem; margin-bottom: 0.5rem; }
+    .price { font-size: 1.9rem; color: var(--green); font-family: 'Playfair Display', serif; font-weight: 700; margin: 0.5rem 0; }
+    .card p { font-size: 0.95rem; }
+    .note { text-align: center; margin-top: 1.5rem; font-size: 0.9rem; color: #6b6d63; font-style: italic; }
+
+    /* WHY */
+    .why { background: var(--green-dark); color: var(--cream); }
+    .why-inner { max-width: 900px; margin: 0 auto; padding: 4.5rem 1.5rem; }
+    .why h2 { color: #fff; }
+    .why .section-tag { color: var(--sage); }
+    .why p { font-weight: 300; }
+
+    /* ABOUT */
+    .about-inner { display: flex; flex-wrap: wrap; align-items: center; gap: 2.5rem; }
+    .about-photo { flex: 1 1 280px; }
+    .about-photo img {
+      width: 100%;
+      max-width: 380px;
+      border-radius: 16px;
+      display: block;
+      margin: 0 auto;
+      box-shadow: 0 10px 30px rgba(45,69,49,0.18);
+    }
+    .about-text { flex: 1 1 320px; }
+    .about-text .signature { font-family: 'Playfair Display', serif; font-size: 1.3rem; color: var(--green); margin-top: 1rem; }
+
+    /* CONTACT */
+    .contact { text-align: center; }
+    .contact a.email { color: var(--green); font-weight: 600; text-decoration: none; border-bottom: 2px solid var(--sage); }
+    .contact .handle { display: inline-block; margin-top: 1rem; font-size: 1.1rem; }
+
+    footer { background: var(--green-dark); color: #cbd3bf; text-align: center; padding: 2rem 1.5rem; font-size: 0.85rem; }
+  </style>
+</head>
+<body>
+
+  <header class="hero">
+    <h1>Bloom Where You Live</h1>
+    <p>Native &amp; pollinator planting design for Vermont yards — beautiful, easy to care for, and buzzing with life.</p>
+    <a class="btn" href="https://instagram.com/802bloom" target="_blank" rel="noopener">See My Work &amp; Get in Touch</a>
+  </header>
+
+  <section>
+    <p class="section-tag">What I Do</p>
+    <h2>Custom native planting plans</h2>
+    <p class="lead">I help Burlington-area homeowners create yards full of native plants and pollinators — beautiful spaces that are easy to care for and alive with bees, butterflies, and birds.</p>
+    <p>As an Environmental Science student with a passion for Vermont's local ecology, I design custom planting plans that tell you exactly what to plant and where — using native and pollinator-friendly species suited to our climate. You get expert, ecological design without the cost of a full-service landscaping crew. Perfect for anyone who wants a thriving, low-maintenance yard they'll love for years.</p>
+  </section>
+
+  <section>
+    <p class="section-tag">Services</p>
+    <h2>Simple, flexible options</h2>
+    <div class="services">
+      <div class="card">
+        <h3>Yard Consultation</h3>
+        <div class="price">$60</div>
+        <p>A one-hour visit to assess your yard's sun, soil, and style, plus a follow-up plant list tailored to your space.</p>
+      </div>
+      <div class="card">
+        <h3>Planting Plan</h3>
+        <div class="price">$250</div>
+        <p>A custom drawn layout showing what to plant and where, with a plant list, spacing, and a local sourcing guide.</p>
+      </div>
+      <div class="card">
+        <h3>Full Yard Plan</h3>
+        <div class="price">$450</div>
+        <p>A complete planting vision for your whole property — designed to install all at once or over several seasons.</p>
+      </div>
+    </div>
+    <p class="note">Founding-client intro pricing — limited spots as I build my Vermont portfolio.</p>
+  </section>
+
+  <section class="why" style="max-width:none;padding:0;">
+    <div class="why-inner">
+      <p class="section-tag">Why Native</p>
+      <h2>Beautiful for you, vital for Vermont</h2>
+      <p>Native plants are adapted to our climate, so once established they need little watering or fuss — saving you time and money. They also support the birds, bees, and butterflies that local ecosystems depend on. A native planting is a garden that gives back: lower maintenance for you, and a real haven for Vermont's pollinators.</p>
+    </div>
+  </section>
+
+  <section class="about">
+    <div class="about-inner">
+      <div class="about-photo">
+        <img src="alexios.jpg" alt="Alexios, founder of Bloom Where You Live, in a Vermont pasture" />
+      </div>
+      <div class="about-text">
+        <p class="section-tag">Meet the Designer</p>
+        <h2>Hi, I'm Alexios</h2>
+        <p>I'm an Environmental Science student in Burlington with a deep love for Vermont's native plants, animals, and wild places. I started Bloom Where You Live to help my neighbors turn ordinary yards into thriving, low-maintenance landscapes full of color and life.</p>
+        <p class="signature">Let's grow something beautiful together.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="contact">
+    <p class="section-tag">Get in Touch</p>
+    <h2>Let's design your yard</h2>
+    <p class="lead">Tell me a little about your space and what you'd love to see. I'd be glad to help.</p>
+    <p><a class="email" href="mailto:802bloom@gmail.com">802bloom@gmail.com</a></p>
+    <p class="handle">🌿 On Instagram: <a class="email" href="https://instagram.com/802bloom" target="_blank" rel="noopener">@802bloom</a></p>
+  </section>
+
+  <footer>
+    Bloom Where You Live · Native planting design in the 802 · Burlington &amp; Chittenden County, Vermont
+  </footer>
+
+</body>
+</html>
