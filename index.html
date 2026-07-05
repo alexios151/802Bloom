@@ -97,24 +97,49 @@
     .contact .handle { display: inline-block; margin-top: 1rem; font-size: 1.1rem; }
 
     footer { background: var(--green-dark); color: #cbd3bf; text-align: center; padding: 2rem 1.5rem; font-size: 0.85rem; }
+  /* PORTFOLIO */
+  .portfolio{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:1.8rem;margin-top:2rem;}
+  .work{background:#fff;border:1px solid #e6e1d5;border-radius:14px;overflow:hidden;box-shadow:0 6px 20px rgba(45,69,49,.08);}
+  .work img{width:100%;display:block;border-bottom:1px solid #e6e1d5;background:#fff;}
+  .work figcaption{padding:1.1rem 1.3rem;font-size:.95rem;font-weight:300;color:#555;}
+  .work figcaption strong{display:block;color:var(--green-dark);font-family:'Playfair Display',serif;font-size:1.15rem;font-weight:700;margin-bottom:.25rem;}
+
+  /* NAV */
+  .nav{position:sticky;top:0;z-index:100;background:var(--green-dark);display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:.5rem;padding:.7rem 1.4rem;box-shadow:0 2px 12px rgba(0,0,0,.15);}
+  .nav .brand{font-family:'Playfair Display',serif;color:#fff;font-weight:700;font-size:1.05rem;text-decoration:none;white-space:nowrap;}
+  .nav ul{list-style:none;display:flex;flex-wrap:wrap;gap:.2rem;}
+  .nav a.link{color:#e8ece0;text-decoration:none;font-size:.9rem;font-weight:500;padding:.4rem .8rem;border-radius:20px;transition:background .15s ease,color .15s ease;}
+  .nav a.link:hover{background:var(--sage);color:var(--green-dark);}
+  section{scroll-margin-top:70px;}
   </style>
 </head>
 <body>
 
-  <header class="hero">
+  <nav class="nav">
+    <a class="brand" href="#top">Bloom Where You Live</a>
+    <ul>
+      <li><a class="link" href="#services">Services</a></li>
+      <li><a class="link" href="#about">About</a></li>
+      <li><a class="link" href="#guide">Plant Guide</a></li>
+      <li><a class="link" href="#portfolio">Portfolio</a></li>
+      <li><a class="link" href="#contact">Contact</a></li>
+    </ul>
+  </nav>
+
+  <header class="hero" id="top">
     <h1>Bloom Where You Live</h1>
-    <p>Native &amp; pollinator planting design for Vermont yards — beautiful, easy to care for, and buzzing with life.</p>
+    <p>Native &amp; pollinator planting design for Vermont yards. Beautiful, easy to care for, and buzzing with life.</p>
     <a class="btn" href="https://instagram.com/802bloom" target="_blank" rel="noopener">See My Work &amp; Get in Touch</a>
   </header>
 
   <section>
     <p class="section-tag">What I Do</p>
     <h2>Custom native planting plans</h2>
-    <p class="lead">I help Burlington-area homeowners create yards full of native plants and pollinators — beautiful spaces that are easy to care for and alive with bees, butterflies, and birds.</p>
-    <p>As an Environmental Science student with a passion for Vermont's local ecology, I design custom planting plans that tell you exactly what to plant and where — using native and pollinator-friendly species suited to our climate. You get expert, ecological design without the cost of a full-service landscaping crew. Perfect for anyone who wants a thriving, low-maintenance yard they'll love for years.</p>
+    <p class="lead">I help Burlington-area homeowners create yards full of native plants and pollinators. Beautiful spaces that are easy to care for and alive with bees, butterflies, and birds.</p>
+    <p>As an Environmental Science student with a passion for Vermont's local ecology, I design custom planting plans that tell you exactly what to plant and where, using native and pollinator-friendly species suited to our climate. You get expert, ecological design without the cost of a full-service landscaping crew. Perfect for anyone who wants a thriving, low-maintenance yard they'll love for years.</p>
   </section>
 
-  <section>
+  <section id="services">
     <p class="section-tag">Services</p>
     <h2>Simple, flexible options</h2>
     <div class="services">
@@ -126,26 +151,26 @@
       <div class="card">
         <h3>Planting Plan</h3>
         <div class="price">$250</div>
-        <p><strong>For one garden area.</strong> A custom drawn layout for a single bed or border — showing exactly what to plant and where, with a full plant list, spacing, and a local sourcing guide.</p>
+        <p><strong>For one garden area.</strong> A custom drawn layout for a single bed or border, showing exactly what to plant and where, with a full plant list, spacing, and a local sourcing guide.</p>
       </div>
       <div class="card">
         <h3>Full Yard Plan</h3>
         <div class="price">$450</div>
-        <p><strong>For your whole property.</strong> Everything in the Planting Plan, but for every area of your yard — tied together into one cohesive design, plus a phasing guide to plant it all at once or over several seasons.</p>
+        <p><strong>For your whole property.</strong> Everything in the Planting Plan, but for every area of your yard, tied together into one cohesive design, plus a phasing guide to plant it all at once or over several seasons.</p>
       </div>
     </div>
-    <p class="note">Founding-client intro pricing — limited spots as I build my Vermont portfolio.</p>
+    <p class="note">Founding-client intro pricing. Limited spots as I build my Vermont portfolio.</p>
   </section>
 
   <section class="why" style="max-width:none;padding:0;">
     <div class="why-inner">
       <p class="section-tag">Why Native</p>
       <h2>Beautiful for you, vital for Vermont</h2>
-      <p>Native plants are adapted to our climate, so once established they need little watering or fuss — saving you time and money. They also support the birds, bees, and butterflies that local ecosystems depend on. A native planting is a garden that gives back: lower maintenance for you, and a real haven for Vermont's pollinators.</p>
+      <p>Native plants are adapted to our climate, so once established they need little watering or fuss, saving you time and money. They also support the birds, bees, and butterflies that local ecosystems depend on. A native planting is a garden that gives back: lower maintenance for you, and a real haven for Vermont's pollinators.</p>
     </div>
   </section>
 
-  <section class="about">
+  <section class="about" id="about">
     <div class="about-inner">
       <div class="about-photo">
         <img src="alexios.JPG" alt="Alexios, founder of Bloom Where You Live, in a Vermont pasture" />
@@ -159,7 +184,29 @@
     </div>
   </section>
 
-  <section class="contact">
+  <section id="guide" style="text-align:center;">
+    <p class="section-tag">Free Resource</p>
+    <h2>Vermont Native Plant Guide</h2>
+    <p class="lead">Explore my free, searchable guide to Vermont-native plants. Sort by height, bloom season, sun, moisture, salt tolerance, and more. It's the same reference I use to design every yard.</p>
+    <a class="btn" href="plant-guide.html">Browse the Plant Guide &rarr;</a>
+  </section>
+
+  <section id="portfolio">
+    <p class="section-tag" style="text-align:center;">Portfolio</p>
+    <h2 style="text-align:center;">Sample designs</h2>
+    <div class="portfolio">
+      <figure class="work">
+        <img src="demo-sunny.jpg" alt="Sunny-side pollinator border planting design" />
+        <figcaption><strong>Sunny-Side Pollinator Border</strong>A full-sun bed of Vermont natives designed for continuous spring-to-fall bloom.</figcaption>
+      </figure>
+      <figure class="work">
+        <img src="demo-shady.jpg" alt="Woodland shade garden planting design" />
+        <figcaption><strong>Woodland Shade Garden</strong>Ferns and shade-loving natives that bring a low-light yard to life.</figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <section class="contact" id="contact">
     <p class="section-tag">Get in Touch</p>
     <h2>Let's design your yard</h2>
     <p class="lead">Tell me a little about your space and what you'd love to see. I'd be glad to help.</p>

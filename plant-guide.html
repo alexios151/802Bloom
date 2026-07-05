@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Vermont Native Plants - Bloom Where You Live</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet" />
+<style>
+  :root{
+    --green:#3a5a40; --green-dark:#2d4531; --sage:#a3b18a;
+    --cream:#f7f4ec; --charcoal:#33352f;
+    --spring:#dcedc8; --summer:#fff3c4; --fall:#ffd8b0;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{font-family:'Montserrat',sans-serif;background:var(--cream);color:var(--charcoal);line-height:1.5;padding:2rem 1rem 4rem;}
+  header{max-width:1280px;margin:0 auto 1.5rem;text-align:center;}
+  h1{font-family:'Playfair Display',serif;color:var(--green-dark);font-size:clamp(1.8rem,4vw,2.6rem);}
+  .sub{color:#6b6d63;margin-top:.4rem;font-weight:300;}
+  .controls{max-width:1280px;margin:1.5rem auto;display:flex;flex-wrap:wrap;gap:.6rem;align-items:center;}
+  #search{flex:1 1 240px;padding:.7rem 1rem;border:1px solid #d8d2c4;border-radius:30px;font-family:inherit;font-size:.95rem;background:#fff;}
+  #search:focus{outline:none;border-color:var(--sage);}
+  .filters{display:flex;gap:.4rem;flex-wrap:wrap;}
+  .fbtn{border:1px solid #d8d2c4;background:#fff;color:var(--green-dark);padding:.5rem .9rem;border-radius:30px;font-family:inherit;font-size:.82rem;cursor:pointer;}
+  .fbtn.active{background:var(--green-dark);color:#fff;border-color:var(--green-dark);}
+  .count{font-size:.85rem;color:#6b6d63;margin-left:auto;}
+  .legend{display:flex;gap:1rem;flex-wrap:wrap;font-size:.8rem;align-items:center;max-width:1280px;margin:0 auto 1rem;}
+  .chip{display:inline-flex;align-items:center;gap:.35rem;}
+  .dot{width:14px;height:14px;border-radius:3px;display:inline-block;}
+  .table-wrap{max-width:1280px;margin:0 auto;overflow-x:auto;border-radius:14px;box-shadow:0 8px 30px rgba(45,69,49,.12);background:#fff;}
+  table{border-collapse:collapse;width:100%;font-size:.84rem;min-width:1060px;}
+  thead th{
+    position:sticky;top:0;background:var(--green-dark);color:#fff;font-weight:600;
+    text-align:left;padding:.8rem .65rem;cursor:pointer;white-space:nowrap;user-select:none;
+    border-bottom:2px solid var(--sage);
+  }
+  thead th:hover{background:var(--green);}
+  thead th .arrow{opacity:.4;font-size:.7rem;margin-left:.2rem;}
+  thead th.sorted .arrow{opacity:1;}
+  tbody td{padding:.6rem .65rem;border-bottom:1px solid #eee7d8;vertical-align:top;}
+  tbody tr:hover{background:#f3f0e6;}
+  .botanical{font-style:italic;color:#5c6b54;}
+  .common{font-weight:600;color:var(--green-dark);}
+  .type{font-size:.72rem;text-transform:uppercase;letter-spacing:.04em;font-weight:600;color:#8a8c80;}
+  .season-cell{font-weight:500;border-radius:5px;padding:.2rem .45rem;display:inline-block;}
+  .spring{background:var(--spring);} .summer{background:var(--summer);} .fall{background:var(--fall);}
+  .notes{color:#555;font-weight:300;min-width:210px;}
+  footer{max-width:1280px;margin:1.5rem auto 0;font-size:.78rem;color:#8a8c80;font-weight:300;}
+  footer .brand{color:var(--green);font-weight:600;}
+  .pg-nav{margin:-2rem -1rem 1.5rem;background:var(--green-dark);padding:.85rem 1.4rem;box-shadow:0 2px 12px rgba(0,0,0,.15);}
+  .pg-nav a{color:#fff;text-decoration:none;font-weight:600;font-size:.95rem;display:inline-flex;align-items:center;gap:.4rem;}
+  .pg-nav a:hover{color:var(--sage);}
+</style>
+</head>
+<body>
+<nav class="pg-nav"><a href="index.html">&larr; Back to Bloom Where You Live</a></nav>
+<header>
+  <h1>Vermont Native Plants</h1>
+  <p class="sub">A working reference of 100% Vermont-native plants commonly stocked at Burlington-area garden centers. Click a column to sort, filter by type, or search.</p>
+</header>
+
+<div class="controls">
+  <input id="search" type="text" placeholder="🔍  Search name, color, condition, or note…" />
+  <div class="filters" id="filters"></div>
+</div>
+<div class="legend">
+  <span class="chip"><span class="dot" style="background:var(--spring)"></span>Spring bloom</span>
+  <span class="chip"><span class="dot" style="background:var(--summer)"></span>Summer bloom</span>
+  <span class="chip"><span class="dot" style="background:var(--fall)"></span>Fall bloom</span>
+  <span class="count" id="count"></span>
+</div>
+
+<div class="table-wrap">
+  <table>
+    <thead><tr id="headrow"></tr></thead>
+    <tbody id="body"></tbody>
+  </table>
+</div>
+
+<footer>
+  <p>Every plant listed is native to Vermont. Heights, spread, and tolerances are typical ranges. Always confirm against the actual site conditions.</p>
+  <p style="margin-top:.5rem;"><span class="brand">Bloom Where You Live</span> · Native planting design in the 802</p>
+</footer>
+
+<script>
+const COLS = [
+  {label:'Type', key:'type', type:'text', cls:'type'},
+  {label:'Common Name', key:'common', type:'text', cls:'common'},
+  {label:'Botanical Name', key:'botanical', type:'text', cls:'botanical'},
+  {label:'Height', key:'height', type:'num'},
+  {label:'Spread', key:'spread', type:'num'},
+  {label:'Bloom Season', key:'season', type:'season'},
+  {label:'Color', key:'color', type:'text'},
+  {label:'Sun / Shade', key:'sun', type:'sun'},
+  {label:'Moisture', key:'moisture', type:'moist'},
+  {label:'Salt', key:'salt', type:'salt'},
+  {label:'Wildlife & Notes', key:'notes', type:'text', cls:'notes'},
+];
+
+const DATA = [
+  // ---- FLOWERS: sun meadow ----
+  ['Flower','Wild Bergamot','Monarda fistulosa','2–4 ft','2–3 ft','Summer','Lavender','Full sun–Part shade','Dry–Medium','Medium','Bee & hummingbird magnet; can get mildew in humidity'],
+  ['Flower','Black-eyed Susan','Rudbeckia hirta','2–3 ft','1–2 ft','Summer–Fall','Yellow','Full sun–Part shade','Dry–Medium','Medium','Cheerful; short-lived but self-sows'],
+  ['Flower','Ox-eye Sunflower','Heliopsis helianthoides','3–4 ft','2–3 ft','Summer','Golden-yellow','Full sun–Part shade','Dry–Medium','Medium','Long bloom; tough and cheerful'],
+  ['Flower','Sneezeweed','Helenium autumnale','3–5 ft','2–3 ft','Late summer–Fall','Yellow-orange','Full sun','Medium–Wet','Low','Late pollinator fuel; not an allergen despite the name'],
+  ['Flower','Butterfly Weed','Asclepias tuberosa','1.5–2 ft','1–1.5 ft','Summer','Orange','Full sun','Dry','High','Monarch host; drought-proof; slow to emerge in spring'],
+  ['Flower','Swamp Milkweed','Asclepias incarnata','3–4 ft','2–3 ft','Summer','Pink','Full sun–Part shade','Medium–Wet','Low','Monarch host; loves damp soil'],
+  ['Flower','Common Milkweed','Asclepias syriaca','3–5 ft','Spreading','Summer','Dusty pink','Full sun','Dry–Medium','Medium','Monarch host; spreads by runners, give it room'],
+  ['Flower','Virginia Mountain Mint','Pycnanthemum virginianum','2–3 ft','2–3 ft','Summer','Silvery-white','Full sun–Part shade','Dry–Medium','Medium','One of the top pollinator plants anywhere; clumps slowly spread'],
+  ['Flower','Obedient Plant','Physostegia virginiana','2–4 ft','2–3 ft','Late summer','Pink','Full sun–Part shade','Medium–Wet','Low','Good cut flower; spreads readily'],
+  ['Flower','Sundrops','Oenothera fruticosa','1–1.5 ft','1 ft','Summer','Bright yellow','Full sun','Dry–Medium','Medium','Day-blooming; forms a spreading mat'],
+  ['Flower','Foxglove Beardtongue','Penstemon digitalis','3–4 ft','1.5–2 ft','Late spring–Early summer','White','Full sun–Part shade','Dry–Medium','Medium','Early native-bee food; "Husker Red" has red foliage'],
+  ['Flower','Wild Lupine','Lupinus perennis','1–2 ft','1–1.5 ft','Late spring','Blue-purple','Full sun–Part shade','Dry','Medium','Karner blue host; fixes nitrogen; needs sandy soil'],
+  ['Flower','Golden Alexanders','Zizia aurea','1–2 ft','1–1.5 ft','Spring','Yellow','Full sun–Part shade','Medium–Wet','Low','Early nectar; black swallowtail host'],
+  ['Flower','Prairie Smoke','Geum triflorum','0.5–1 ft','1 ft','Spring','Pink-red','Full sun','Dry','Medium','Smoky pink seed-plumes; great front edge (rare VT native)'],
+  ['Flower','Nodding Onion','Allium cernuum','1–1.5 ft','0.5–1 ft','Summer','Pink','Full sun–Part shade','Dry–Medium','Medium','Bees love it; deer- and rabbit-resistant'],
+  ["Flower","Culver's Root",'Veronicastrum virginicum','4–6 ft','2–3 ft','Summer','White','Full sun–Part shade','Medium–Wet','Low','Architectural candelabra spikes; pollinators'],
+  ['Flower','Joe-Pye Weed','Eutrochium maculatum','4–7 ft','2–4 ft','Late summer','Mauve-pink','Full sun–Part shade','Medium–Wet','Low','Back-of-border butterfly magnet'],
+  ['Flower','Boneset','Eupatorium perfoliatum','3–4 ft','2–3 ft','Late summer','White','Full sun–Part shade','Medium–Wet','Low','Supports a huge range of small pollinators'],
+  // ---- FLOWERS: asters & goldenrods (fall) ----
+  ['Flower','New England Aster','Symphyotrichum novae-angliae','3–5 ft','2–3 ft','Fall','Purple','Full sun–Part shade','Medium–Wet','Medium','Critical late nectar for migrating monarchs'],
+  ['Flower','Smooth Blue Aster','Symphyotrichum laeve','2–4 ft','1.5–2 ft','Fall','Blue-purple','Full sun–Part shade','Dry–Medium','Medium','Mildew-resistant; blue-green foliage'],
+  ['Flower','Heath Aster','Symphyotrichum ericoides','1–3 ft','1–2 ft','Fall','White','Full sun','Dry–Medium','High','Clouds of tiny flowers; very tough'],
+  ['Flower','Showy Goldenrod','Solidago speciosa','2–3 ft','1.5–2 ft','Fall','Yellow','Full sun','Dry–Medium','Medium','Huge pollinator value; well-behaved clump'],
+  ['Flower','Gray Goldenrod','Solidago nemoralis','1–2 ft','1 ft','Fall','Yellow','Full sun','Dry','High','Thrives in poor, dry, roadside soil'],
+  // ---- FLOWERS: shade / woodland ----
+  ['Flower','Wild Columbine','Aquilegia canadensis','1–2 ft','1 ft','Spring','Red-yellow','Part shade–Shade','Dry–Medium','Low','Hummingbirds; self-sows in rock crevices'],
+  ['Flower','Wild Geranium','Geranium maculatum','1.5–2 ft','1.5 ft','Spring','Pink-purple','Part shade–Shade','Medium','Low','Woodland edge; tidy mounding foliage'],
+  ['Flower','Woodland Phlox','Phlox divaricata','0.5–1 ft','1 ft','Spring','Blue','Part shade–Shade','Medium','Low','Fragrant; early butterfly nectar'],
+  ['Flower','Marsh Marigold','Caltha palustris','1–1.5 ft','1–1.5 ft','Spring','Yellow','Part shade–Full sun','Wet','Low','Early bloom for wet spots & rain gardens'],
+  ['Flower','Golden Ragwort','Packera aurea','1–2 ft','1–1.5 ft','Spring','Yellow','Part shade–Shade','Medium–Wet','Low','Evergreen rosette groundcover; early nectar'],
+  ["Flower","Solomon's Seal",'Polygonatum biflorum','1–3 ft','1–2 ft','Spring','White','Shade–Part shade','Medium','Low','Graceful arching stems; berries feed birds'],
+  ["Flower","Jacob's Ladder",'Polemonium reptans','1–1.5 ft','1 ft','Spring','Blue','Part shade–Shade','Medium','Low','Ferny foliage; food for early bees'],
+  ['Flower','White Wood Aster','Eurybia divaricata','1–2 ft','1.5–2 ft','Late summer–Fall','White','Shade–Part shade','Dry–Medium','Low','Excellent dry-shade groundcover aster'],
+  ['Flower','Big-leaf Aster','Eurybia macrophylla','1–2.5 ft','1–2 ft','Late summer','Pale violet','Shade–Part shade','Dry–Medium','Low','One of the few asters for dry shade'],
+  ['Flower','Zigzag Goldenrod','Solidago flexicaulis','1–3 ft','1–2 ft','Fall','Yellow','Part shade–Shade','Medium','Low','Rare shade-tolerant goldenrod; fall pollinator food'],
+  ['Flower','Bottle Gentian','Gentiana andrewsii','1–2 ft','1 ft','Fall','Deep blue','Part shade–Full sun','Medium–Wet','Low','Only strong bumblebees can open the closed flowers'],
+  // ---- FLOWERS: wetland ----
+  ['Flower','Cardinal Flower','Lobelia cardinalis','2–4 ft','1 ft','Late summer','Scarlet red','Part shade–Full sun','Wet','Low','Hummingbird favorite; needs steady moisture'],
+  ['Flower','Great Blue Lobelia','Lobelia siphilitica','2–3 ft','1 ft','Late summer–Fall','Blue','Part shade–Full sun','Medium–Wet','Low','Bumblebees; pairs with Cardinal Flower'],
+  ['Flower','Turtlehead','Chelone glabra','2–3 ft','1.5–2 ft','Late summer','White-pink','Part shade–Full sun','Medium–Wet','Low','Baltimore checkerspot host; damp spots'],
+  // ---- GRASSES ----
+  ['Grass','Little Bluestem','Schizachyrium scoparium','2–3 ft','1.5–2 ft','Late summer','Blue-green→copper','Full sun','Dry–Medium','High','Salt- & drought-proof; brilliant copper winter color'],
+  ['Grass','Switchgrass','Panicum virgatum','4–6 ft','2–3 ft','Late summer','Green→gold','Full sun–Part shade','Dry–Wet','High','Upright living screen; extremely adaptable'],
+  ['Grass','Big Bluestem','Andropogon gerardii','4–6 ft','2 ft','Late summer','Blue-green→red','Full sun','Dry–Medium','Medium','Tall statement grass; "turkey-foot" seedheads'],
+  ['Grass','Pennsylvania Sedge','Carex pensylvanica','0.5–1 ft','1 ft','Spring','Green','Part shade–Shade','Dry–Medium','Low','Lawn alternative for dry shade; spreads gently'],
+  ['Grass','Tussock Sedge','Carex stricta','2–3 ft','2–3 ft','Spring','Green','Full sun–Part shade','Medium–Wet','Low','Clumps in wet ground; rain gardens & pond edges'],
+  // ---- FERNS ----
+  ['Fern','Ostrich Fern','Matteuccia struthiopteris','3–5 ft','2–3 ft','Foliage','Green fronds','Part shade–Shade','Medium–Wet','Low','Edible fiddleheads; spreads to fill damp shade'],
+  ['Fern','Cinnamon Fern','Osmunda cinnamomea','3–4 ft','2–3 ft','Foliage','Green fronds','Part shade–Shade','Medium–Wet','Low','Cinnamon fertile fronds; loves wet shade'],
+  ['Fern','Christmas Fern','Polystichum acrostichoides','1–2 ft','1.5–2 ft','Foliage','Evergreen','Part shade–Shade','Dry–Medium','Low','Evergreen; great for shady slopes & dry shade'],
+  ['Fern','Lady Fern','Athyrium filix-femina','2–3 ft','1.5–2 ft','Foliage','Green fronds','Part shade–Shade','Medium','Low','Lacy, adaptable, and easy to grow'],
+  ['Fern','Maidenhair Fern','Adiantum pedatum','1–2 ft','1–1.5 ft','Foliage','Green fronds','Shade–Part shade','Medium','Low','Delicate fan-shaped fronds; woodland gem'],
+  // ---- GROUNDCOVERS ----
+  ['Groundcover','Foamflower','Tiarella cordifolia','0.5–1 ft','1–1.5 ft','Spring','White','Shade–Part shade','Medium–Wet','Low','Semi-evergreen groundcover for shade'],
+  ['Groundcover','Wild Ginger','Asarum canadense','0.5 ft','1 ft','Spring','Hidden','Shade','Medium–Wet','Low','Glossy heart-shaped groundcover; deer-resistant'],
+  ['Groundcover','Wild Strawberry','Fragaria virginiana','0.5 ft','Spreading','Spring','White','Full sun–Part shade','Dry–Medium','Medium','Edible fruit; fast-spreading living mulch'],
+  ['Groundcover','Bearberry','Arctostaphylos uva-ursi','0.5 ft','2–4 ft','Spring','Pink-white','Full sun–Part shade','Dry','High','Evergreen mat; superb for poor, sandy, salty soil'],
+  ['Groundcover','Barren Strawberry','Geum fragarioides','0.5 ft','1–1.5 ft','Spring','Yellow','Part shade–Shade','Medium','Low','Semi-evergreen strawberry-like groundcover'],
+];
+
+// ---- smart sort helpers ----
+const firstNum = s => { const m = String(s).match(/[\d.]+/); return m ? parseFloat(m[0]) : 999; };
+const SUN = {'Full sun':1,'Full sun–Part shade':2,'Part shade–Full sun':3,'Part shade':4,'Part shade–Shade':5,'Shade–Part shade':6,'Shade':7};
+const MOIST = {'Dry':1,'Dry–Medium':2,'Dry–Wet':2.5,'Medium':3,'Medium–Wet':4,'Wet':5};
+const SALT = {'Low':1,'Medium':2,'High':3};
+function seasonOrd(s){
+  const t = String(s).toLowerCase();
+  if(t.includes('foliage')) return 90;
+  if(t.includes('spring') && t.includes('summer')) return 3;
+  if(t.includes('late spring')) return 2;
+  if(t.includes('spring')) return 1;
+  if(t.includes('late summer')) return 6;
+  if(t.includes('summer') && t.includes('fall')) return 5;
+  if(t.includes('summer')) return 4;
+  if(t.includes('fall')) return 8;
+  return 50;
+}
+const seasonClass = s => { const t=String(s).toLowerCase();
+  if(t.includes('foliage')) return '';
+  if(t.startsWith('spring')||t.startsWith('late spring')) return 'spring';
+  if(t.includes('summer')) return 'summer';
+  return 'fall';
+};
+
+function sortVal(row,col){
+  const v=row[col.key];
+  switch(col.type){
+    case 'num': return firstNum(v);
+    case 'season': return seasonOrd(v);
+    case 'sun': return SUN[v] ?? 99;
+    case 'moist': return MOIST[v] ?? 99;
+    case 'salt': return SALT[v] ?? 99;
+    default: return String(v).toLowerCase();
+  }
+}
+
+const rows = DATA.map(r => Object.fromEntries(COLS.map((c,i)=>[c.key, r[i]])));
+let sortCol=null, sortDir=1, filter='', typeFilter='All';
+
+// header
+const headrow=document.getElementById('headrow');
+COLS.forEach((c,i)=>{
+  const th=document.createElement('th');
+  th.innerHTML=c.label+' <span class="arrow">▲▼</span>';
+  th.onclick=()=>{ if(sortCol===i){sortDir*=-1;}else{sortCol=i;sortDir=1;} render(); };
+  headrow.appendChild(th);
+});
+
+// type filter buttons
+const TYPES=['All','Flower','Grass','Fern','Groundcover'];
+const fbox=document.getElementById('filters');
+TYPES.forEach(t=>{
+  const b=document.createElement('button');
+  b.className='fbtn'+(t==='All'?' active':''); b.textContent=t;
+  b.onclick=()=>{ typeFilter=t; document.querySelectorAll('.fbtn').forEach(x=>x.classList.toggle('active',x===b)); render(); };
+  fbox.appendChild(b);
+});
+
+function render(){
+  let view=rows.filter(r=>{
+    if(typeFilter!=='All' && r.type!==typeFilter) return false;
+    if(filter && !COLS.some(c=>String(r[c.key]).toLowerCase().includes(filter))) return false;
+    return true;
+  });
+  if(sortCol!==null){
+    const col=COLS[sortCol];
+    view=view.slice().sort((a,b)=>{const av=sortVal(a,col),bv=sortVal(b,col);return (av<bv?-1:av>bv?1:0)*sortDir;});
+  }
+  const body=document.getElementById('body'); body.innerHTML='';
+  view.forEach(r=>{
+    const tr=document.createElement('tr');
+    COLS.forEach(c=>{
+      const td=document.createElement('td');
+      if(c.type==='season'){ td.innerHTML=`<span class="season-cell ${seasonClass(r.season)}">${r[c.key]}</span>`; }
+      else { td.textContent=r[c.key]; if(c.cls) td.className=c.cls; }
+      tr.appendChild(td);
+    });
+    body.appendChild(tr);
+  });
+  document.querySelectorAll('thead th').forEach((th,i)=>{
+    th.classList.toggle('sorted',i===sortCol);
+    const a=th.querySelector('.arrow'); if(a) a.textContent=i===sortCol?(sortDir===1?'▲':'▼'):'▲▼';
+  });
+  document.getElementById('count').textContent=view.length+' of '+rows.length+' plants';
+}
+
+document.getElementById('search').addEventListener('input',e=>{filter=e.target.value.trim().toLowerCase();render();});
+render();
+</script>
+</body>
+</html>
