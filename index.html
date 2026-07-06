@@ -95,6 +95,39 @@
     .contact { text-align: center; }
     .contact a.email { color: var(--green); font-weight: 600; text-decoration: none; border-bottom: 2px solid var(--sage); }
     .contact .handle { display: inline-block; margin-top: 1rem; font-size: 1.1rem; }
+    .contact-form {
+      max-width: 540px;
+      margin: 2.5rem auto 0;
+      text-align: left;
+      display: grid;
+      gap: 1.1rem;
+    }
+    .contact-form label { font-size: 0.9rem; font-weight: 600; color: var(--green-dark); display: block; margin-bottom: 0.35rem; }
+    .contact-form input,
+    .contact-form select,
+    .contact-form textarea {
+      width: 100%;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 1rem;
+      font-weight: 300;
+      color: var(--charcoal);
+      background: #fff;
+      border: 1px solid #d8d3c6;
+      border-radius: 10px;
+      padding: 0.75rem 0.9rem;
+    }
+    .contact-form textarea { resize: vertical; min-height: 120px; }
+    .contact-form input:focus,
+    .contact-form select:focus,
+    .contact-form textarea:focus { outline: none; border-color: var(--sage); box-shadow: 0 0 0 3px rgba(168,184,138,0.25); }
+    .contact-form button {
+      justify-self: center;
+      border: none;
+      cursor: pointer;
+      margin-top: 0.4rem;
+      font-family: 'Montserrat', sans-serif;
+    }
+    .contact .or-line { margin: 2.5rem 0 0; font-size: 0.95rem; color: #6b6d63; }
 
     footer { background: var(--green-dark); color: #cbd3bf; text-align: center; padding: 2rem 1.5rem; font-size: 0.85rem; }
   /* PORTFOLIO */
@@ -129,7 +162,7 @@
   <header class="hero" id="top">
     <h1>Bloom Where You Live</h1>
     <p>Native &amp; pollinator planting design for Vermont yards. Beautiful, easy to care for, and buzzing with life.</p>
-    <a class="btn" href="https://instagram.com/802bloom" target="_blank" rel="noopener">See My Work &amp; Get in Touch</a>
+    <a class="btn" href="#contact">Get Your Yard Started &rarr;</a>
   </header>
 
   <section>
@@ -201,7 +234,7 @@
       </figure>
       <figure class="work">
         <img src="demo-shady.jpg" alt="Woodland shade garden planting design" />
-        <figcaption><strong>Woodland Shade Garden</strong>Ferns and shade-loving natives that bring a low-light yard to life.</figcaption>
+        <figcaption><strong>Woodland Shade Garden</strong>Shade-loving woodland natives that bring a low-light yard to life.</figcaption>
       </figure>
     </div>
   </section>
@@ -210,8 +243,46 @@
     <p class="section-tag">Get in Touch</p>
     <h2>Let's design your yard</h2>
     <p class="lead">Tell me a little about your space and what you'd love to see. I'd be glad to help.</p>
-    <p><a class="email" href="mailto:802bloom@gmail.com">802bloom@gmail.com</a></p>
-    <p class="handle">🌿 On Instagram: <a class="email" href="https://instagram.com/802bloom" target="_blank" rel="noopener">@802bloom</a></p>
+
+    <form class="contact-form" action="https://formsubmit.co/802bloom@gmail.com" method="POST">
+      <!-- FormSubmit settings -->
+      <input type="hidden" name="_subject" value="New 802bloom inquiry 🌿">
+      <input type="hidden" name="_template" value="table">
+      <input type="hidden" name="_captcha" value="false">
+      <input type="text" name="_honey" style="display:none">
+
+      <div>
+        <label for="cf-name">Your name</label>
+        <input id="cf-name" type="text" name="Name" required>
+      </div>
+      <div>
+        <label for="cf-email">Email</label>
+        <input id="cf-email" type="email" name="Email" required>
+      </div>
+      <div>
+        <label for="cf-town">Your town</label>
+        <input id="cf-town" type="text" name="Town" placeholder="e.g. Burlington">
+      </div>
+      <div>
+        <label for="cf-service">What are you interested in?</label>
+        <select id="cf-service" name="Service interested in">
+          <option>Not sure yet — help me choose</option>
+          <option>Yard Consultation ($60)</option>
+          <option>Planting Plan ($200)</option>
+          <option>Full Yard Plan ($350)</option>
+        </select>
+      </div>
+      <div>
+        <label for="cf-message">Tell me about your yard</label>
+        <textarea id="cf-message" name="About your yard" placeholder="Sun or shade? What would you love to see? Any problem spots?" required></textarea>
+      </div>
+      <button class="btn" type="submit">Send My Message 🌿</button>
+    </form>
+
+    <p class="or-line">Prefer email or Instagram? Reach me at
+      <a class="email" href="mailto:802bloom@gmail.com">802bloom@gmail.com</a>
+      or <a class="email" href="https://instagram.com/802bloom" target="_blank" rel="noopener">@802bloom</a>.
+    </p>
   </section>
 
   <footer>
