@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Thank you | Bloom Where You Live</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&family=Montserrat:wght@300;400;600&display=swap" rel="stylesheet" />
+  <style>
+    :root { --green-dark:#2d4531; --green:#3c5a3f; --sage:#a8b88a; --cream:#f7f4ec; --charcoal:#33352e; }
+    * { box-sizing:border-box; }
+    body {
+      margin:0; min-height:100vh; background:var(--cream); color:var(--charcoal);
+      font-family:'Montserrat',sans-serif; font-weight:300; line-height:1.6;
+      display:flex; align-items:center; justify-content:center; padding:2rem 1.5rem; text-align:center;
+    }
+    .card { max-width:520px; }
+    img.logo { width:150px; height:auto; margin:0 auto 1.6rem; display:block; }
+    h1 { font-family:'Playfair Display',serif; font-weight:700; color:var(--green-dark); font-size:clamp(2rem,6vw,2.8rem); margin:0 0 1rem; }
+    p { font-size:1.1rem; margin:0 auto 1rem; max-width:42ch; }
+    .sub { color:#6b6d63; font-size:0.98rem; }
+    a.btn {
+      display:inline-block; margin-top:1.4rem; background:var(--sage); color:var(--green-dark);
+      padding:0.85rem 2rem; border-radius:40px; text-decoration:none; font-weight:600;
+      transition:transform 0.15s ease, background 0.15s ease;
+    }
+    a.btn:hover { transform:translateY(-2px); background:#b7c79b; }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <img class="logo" src="logo.png" alt="Bloom Where You Live logo" />
+    <h1>Thank you! 🌿</h1>
+    <p>I've got your request and I'll be in touch soon to talk about your yard.</p>
+    <p class="sub">Check your inbox — you'll get a quick confirmation from me. If you don't see it, peek in your spam folder.</p>
+    <a class="btn" href="index.html">&larr; Back to home</a>
+  </div>
+</body>
+</html>

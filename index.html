@@ -245,7 +245,7 @@
     <h2>Let's design your yard</h2>
     <p class="lead">Tell me a little about your space and what you'd love to see. I'd be glad to help.</p>
 
-    <form class="contact-form" id="leadForm">
+    <form class="contact-form" id="leadForm" action="https://formsubmit.co/802bloom@gmail.com" method="POST">
       <!-- Honeypot: hidden anti-spam field, real people leave it blank -->
       <input type="text" name="_honey" style="display:none" tabindex="-1" autocomplete="off">
       <!-- FormSubmit settings -->
@@ -253,6 +253,7 @@
       <input type="hidden" name="_template" value="table">
       <input type="hidden" name="_captcha" value="false">
       <input type="hidden" name="_autoresponse" value="Thanks for reaching out to Bloom Where You Live! I've got your request and I'll be in touch soon. 🌿 — Alexios">
+      <input type="hidden" name="_next" value="https://802bloom.com/thank-you.html">
 
 
       <div>
@@ -284,42 +285,6 @@
     </form>
     <p id="formStatus" class="form-status" role="status"></p>
 
-    <script>
-      (function () {
-        // Sends submissions straight to your email via FormSubmit — no server needed.
-        var FORM_ENDPOINT = "https://formsubmit.co/ajax/802bloom@gmail.com";
-
-        var form = document.getElementById('leadForm');
-        var status = document.getElementById('formStatus');
-        var btn = form.querySelector('button[type="submit"]');
-
-        form.addEventListener('submit', function (e) {
-          e.preventDefault();
-          if (form._honey.value) return; // a spam bot filled the hidden field
-          btn.disabled = true;
-          btn.textContent = 'Sending…';
-          fetch(FORM_ENDPOINT, {
-            method: 'POST',
-            headers: { 'Accept': 'application/json' },
-            body: new FormData(form)
-          })
-            .then(function (r) { return r.json(); })
-            .then(function () {
-              form.reset();
-              status.textContent = "Thank you! I've got your request and I'll be in touch soon. 🌿";
-              status.style.color = '#3f6b46';
-            })
-            .catch(function () {
-              status.textContent = "Sorry, something went wrong — please email 802bloom@gmail.com instead.";
-              status.style.color = '#b4534b';
-            })
-            .then(function () {
-              btn.disabled = false;
-              btn.textContent = 'Send My Message 🌿';
-            });
-        });
-      })();
-    </script>
 
     <p class="or-line">Prefer email or Instagram? Reach me at
       <a class="email" href="mailto:802bloom@gmail.com">802bloom@gmail.com</a>
