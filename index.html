@@ -150,7 +150,7 @@
 <body>
 
   <nav class="nav">
-    <a class="brand" href="#top">Bloom Where You Live</a>
+    <a class="brand" href="#top" style="display:inline-flex;align-items:center;gap:.5rem;"><img src="logo.png" alt="" style="height:40px;width:40px;" />Bloom Where You Live</a>
     <ul>
       <li><a class="link" href="#services">Services</a></li>
       <li><a class="link" href="#about">About</a></li>
@@ -248,6 +248,12 @@
     <form class="contact-form" id="leadForm">
       <!-- Honeypot: hidden anti-spam field, real people leave it blank -->
       <input type="text" name="_honey" style="display:none" tabindex="-1" autocomplete="off">
+      <!-- FormSubmit settings -->
+      <input type="hidden" name="_subject" value="New 802bloom inquiry 🌿">
+      <input type="hidden" name="_template" value="table">
+      <input type="hidden" name="_captcha" value="false">
+      <input type="hidden" name="_autoresponse" value="Thanks for reaching out to Bloom Where You Live! I've got your request and I'll be in touch soon. 🌿 — Alexios">
+
 
       <div>
         <label for="cf-name">Your name</label>
@@ -280,8 +286,8 @@
 
     <script>
       (function () {
-        // 1. Paste your Google Apps Script Web App URL between the quotes below:
-        var SCRIPT_URL = "PASTE_YOUR_WEB_APP_URL_HERE";
+        // Sends submissions straight to your email via FormSubmit — no server needed.
+        var FORM_ENDPOINT = "https://formsubmit.co/ajax/802bloom@gmail.com";
 
         var form = document.getElementById('leadForm');
         var status = document.getElementById('formStatus');
@@ -292,10 +298,15 @@
           if (form._honey.value) return; // a spam bot filled the hidden field
           btn.disabled = true;
           btn.textContent = 'Sending…';
-          fetch(SCRIPT_URL, { method: 'POST', mode: 'no-cors', body: new FormData(form) })
+          fetch(FORM_ENDPOINT, {
+            method: 'POST',
+            headers: { 'Accept': 'application/json' },
+            body: new FormData(form)
+          })
+            .then(function (r) { return r.json(); })
             .then(function () {
               form.reset();
-              status.textContent = "Thank you! I've got your request and I'll be in touch soon. (No confirmation email is sent, so no need to check your inbox.) 🌿";
+              status.textContent = "Thank you! I've got your request and I'll be in touch soon. 🌿";
               status.style.color = '#3f6b46';
             })
             .catch(function () {
@@ -314,6 +325,7 @@
       <a class="email" href="mailto:802bloom@gmail.com">802bloom@gmail.com</a>
       or <a class="email" href="https://instagram.com/802bloom" target="_blank" rel="noopener">@802bloom</a>.
     </p>
+    <img src="logo.png" alt="Bloom Where You Live logo" style="width:130px;height:auto;display:block;margin:2.2rem auto 0;" />
   </section>
 
   <footer>
