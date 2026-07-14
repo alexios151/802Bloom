@@ -133,15 +133,14 @@
 
     footer { background: var(--green-dark); color: #cbd3bf; text-align: center; padding: 2rem 1.5rem; font-size: 0.85rem; }
   /* PORTFOLIO CAROUSEL */
-  .carousel{position:relative;margin-top:2rem;}
-  .carousel-track{display:flex;align-items:flex-start;gap:1.8rem;overflow-x:auto;scroll-snap-type:x mandatory;scroll-behavior:smooth;padding:.5rem .2rem 1rem;scrollbar-width:none;-webkit-overflow-scrolling:touch;}
+  .carousel{margin-top:2rem;}
+  .carousel-row{display:flex;align-items:center;gap:.6rem;}
+  .carousel-track{flex:1 1 auto;min-width:0;display:flex;align-items:flex-start;gap:1.8rem;overflow-x:auto;scroll-snap-type:x mandatory;scroll-behavior:smooth;padding:.5rem .2rem 1rem;scrollbar-width:none;-webkit-overflow-scrolling:touch;}
   .carousel-track::-webkit-scrollbar{display:none;}
-  .carousel-track .work{flex:0 0 min(360px,82vw);scroll-snap-align:center;}
-  .car-btn{position:absolute;top:130px;transform:translateY(-50%);z-index:5;width:44px;height:44px;border-radius:50%;border:none;background:var(--green-dark);color:#fff;font-size:1.5rem;line-height:1;cursor:pointer;box-shadow:0 4px 14px rgba(45,69,49,.28);display:flex;align-items:center;justify-content:center;transition:background .15s ease,transform .15s ease;}
+  .carousel-track .work{flex:0 0 min(340px,80vw);scroll-snap-align:center;}
+  .car-btn{flex:0 0 auto;width:44px;height:44px;border-radius:50%;border:none;background:var(--green-dark);color:#fff;font-size:1.5rem;line-height:1;cursor:pointer;box-shadow:0 4px 14px rgba(45,69,49,.28);display:flex;align-items:center;justify-content:center;transition:background .15s ease,transform .15s ease;}
   .car-btn:hover{background:var(--green);}
-  .car-btn:active{transform:translateY(-50%) scale(.94);}
-  .car-btn.prev{left:-6px;}
-  .car-btn.next{right:-6px;}
+  .car-btn:active{transform:scale(.94);}
   .dots{display:flex;justify-content:center;gap:.5rem;margin-top:.4rem;}
   .dots .dot{width:9px;height:9px;border-radius:50%;border:none;background:#cfccbf;cursor:pointer;padding:0;transition:background .15s ease,transform .15s ease;}
   .dots .dot.active{background:var(--green);transform:scale(1.25);}
@@ -268,6 +267,7 @@
     <h2 style="text-align:center;">Sample designs</h2>
     <p class="lead" style="text-align:center;max-width:620px;margin:0 auto 1rem;">A look at the kind of native, pollinator-friendly designs I create for Vermont yards.</p>
     <div class="carousel">
+      <div class="carousel-row">
       <button class="car-btn prev" type="button" aria-label="Previous design">&lsaquo;</button>
       <div class="carousel-track" id="portfolioTrack">
         <figure class="work">
@@ -301,6 +301,7 @@
         </figure>
       </div>
       <button class="car-btn next" type="button" aria-label="Next design">&rsaquo;</button>
+      </div>
       <div class="dots" id="portfolioDots"></div>
     </div>
   </section>
@@ -390,37 +391,55 @@
       var dotsWrap = document.getElementById('portfolioDots');
       var prev = document.querySelector('.car-btn.prev');
       var next = document.querySelector('.car-btn.next');
+      var pages = 1;
 
-      cards.forEach(function (card, i) {
-        var dot = document.createElement('button');
-        dot.className = 'dot';
-        dot.type = 'button';
-        dot.setAttribute('aria-label', 'Go to slide ' + (i + 1));
-        dot.addEventListener('click', function () { goTo(i); });
-        dotsWrap.appendChild(dot);
-      });
-      var dots = Array.prototype.slice.call(dotsWrap.children);
-
+      function gap() {
+        return parseFloat(getComputedStyle(track).columnGap || getComputedStyle(track).gap) || 0;
+      }
       function step() {
-        var gap = parseFloat(getComputedStyle(track).columnGap || getComputedStyle(track).gap) || 0;
-        return cards[0].offsetWidth + gap;
+        return cards[0].offsetWidth + gap();
+      }
+      // How many distinct scroll positions exist, given how many cards are visible at once
+      function pageCount() {
+        var visible = Math.max(1, Math.round(track.clientWidth / step()));
+        return Math.max(1, cards.length - visible + 1);
       }
       function goTo(i) {
         track.scrollTo({ left: cards[i].offsetLeft - cards[0].offsetLeft, behavior: 'smooth' });
       }
       function update() {
-        var pos = track.scrollLeft, idx = 0, min = Infinity;
-        cards.forEach(function (card, i) {
-          var d = Math.abs((card.offsetLeft - cards[0].offsetLeft) - pos);
-          if (d < min) { min = d; idx = i; }
-        });
-        dots.forEach(function (d, i) { d.classList.toggle('active', i === idx); });
+        var idx = Math.round(track.scrollLeft / step());
+        if (idx < 0) idx = 0;
+        if (idx > pages - 1) idx = pages - 1;
+        var dots = dotsWrap.children;
+        for (var i = 0; i < dots.length; i++) {
+          dots[i].classList.toggle('active', i === idx);
+        }
+      }
+      function build() {
+        pages = pageCount();
+        dotsWrap.innerHTML = '';
+        for (var i = 0; i < pages; i++) {
+          var dot = document.createElement('button');
+          dot.className = 'dot';
+          dot.type = 'button';
+          dot.setAttribute('aria-label', 'Go to position ' + (i + 1));
+          (function (idx) { dot.addEventListener('click', function () { goTo(idx); }); })(i);
+          dotsWrap.appendChild(dot);
+        }
+        // If everything already fits, there's nothing to scroll — hide the controls
+        var single = pages <= 1;
+        dotsWrap.style.display = single ? 'none' : 'flex';
+        prev.style.display = single ? 'none' : 'flex';
+        next.style.display = single ? 'none' : 'flex';
+        update();
       }
 
       prev.addEventListener('click', function () { track.scrollBy({ left: -step(), behavior: 'smooth' }); });
       next.addEventListener('click', function () { track.scrollBy({ left: step(), behavior: 'smooth' }); });
       track.addEventListener('scroll', function () { window.requestAnimationFrame(update); });
-      update();
+      window.addEventListener('resize', build);
+      build();
     })();
   </script>
 
